@@ -7,7 +7,7 @@ void setup() {
   Serial2.begin(9600);                        // Serial2 will print on Bluetooth app terminal
   Serial3.begin(9600);                        // Use Serial3 for the Mega connections (pin 18, 19)
 
-  Serial2.println("Starting Setup procedures");
+  Serial2.println("Konfiguracja");
 
   // Initializing the interrupt variables
   pinMode(interruptPinTwo, OUTPUT);     // Set pin mode of pin 2 to output
@@ -54,12 +54,12 @@ void setup() {
 
   pinMode(L1, OUTPUT);  // Arduino signal output from left motor rotation direction control
   pinMode(L2, OUTPUT);  // Arduino signal output from left motor rotation direction control
-  pinMode(R1, OUTPUT);  // Arduino signal output from the right engine rotation direction control
+  pinMode(R1, OUTPUT);  // Arduino signaould not find a valid HMC5883L sensor, check wiring!l output from the right engine rotation direction control
   pinMode(R2, OUTPUT);  // Arduino signal output from the right engine rotation direction control
 
   // Compass Setup
   while (!compass.begin()) {         // Check if compass is being detected
-    Serial2.println("Could not find a valid HMC5883L sensor, check wiring!");
+    Serial2.println("Nie można znaleźć prawidłowego czujnika HMC5883L!");
     delay(500);                      // Print this every 0.5 seconds while in the loop
   }
   compass.setRange(HMC5883L_RANGE_1_3GA);           // Set compass measurement range
@@ -97,7 +97,7 @@ void setup() {
   
   inputDestination();       // Go to function to input your destination coordinates
   
-  Serial2.println("Setup complete. Car operations will begin in 10 seconds");
+  Serial2.println("Konfiguracja ukończona. Start za 10 sekund");
   delay(10000);             // 10 seconds - To give us time to prepare the car
 
 }
