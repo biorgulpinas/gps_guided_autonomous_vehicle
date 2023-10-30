@@ -21,7 +21,7 @@ void compassBearingDegrees() {  // The function that updates our current compass
   // headingDegrees is now a global so you can use it to compare to gpsAngleDegrees
   headingDegrees = heading * 180 / M_PI; // Convert to degrees
 
-  Serial2.print("Current Compass Degrees = ");
+  Serial2.print("Aktualne wskazanie kompasu = ");
   Serial2.println(headingDegrees);
 
 }
