@@ -8,7 +8,7 @@ void MenuFunction() {           // The menu that will run infinitely in the loop
   Serial2.println("Menu główne");
   Serial2.println("'o': opcje");
   Serial2.println("'u': automatyzacja");
-  Serial2.println("'w': do przodu"");
+  Serial2.println("'w': do przodu");
   Serial2.println("'s': do tyłu");
   Serial2.println("'a': skręć w lewo");
   Serial2.println("'d': skręć w prawo");
