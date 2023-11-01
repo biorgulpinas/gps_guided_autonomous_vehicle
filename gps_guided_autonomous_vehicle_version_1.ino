@@ -2,20 +2,53 @@
 #include "TinyGPS++.h"
 #include <Wire.h>
 #include <math.h>
+#include <SoftwareSerial.h>
 
-// Car variables initialized
-#define L_motors_speed 10           // controls the speed of the left motors;
-#define R_motors_speed 11           // controls the speed of the right motors;     
-#define L1 8                        // controls rotation direction of left motors;
-#define L2 9                        // controls rotation direction of left motors;
-#define R1 12                       // controls rotation direction of right motors;
-#define R2 7                        // controls rotation direction of right motors;
+// ########################## DEFINES ##########################
 
-// Initializing GPS + Compass objects   // TX: Yellow   RX: Green
+//########## Sterownik silnika ###########
+#define HOVER_SERIAL_BAUD   115200      // [-] Baud rate for HoverSerial (used to communicate with the hoverboard)
+#define START_FRAME         0xABCD     	// [-] Start frme definition for reliable serial communication
+#define TIME_SEND           100         // [ms] Sending time interval
+#define SPEED_MAX_TEST      300         // [-] Maximum speed for testing
+#define SPEED_STEP          20          // [-] Speed step
+
+SoftwareSerial HoverSerial(2,3);        // RX, TX
+
+// Initializing GPS
 TinyGPSPlus gps;                        // GPS object "gps" that takes in NMEA data
 
 
 //----------------------------- Global Variables -----------------------------//
+//----- Sterownik silnika ---------//
+uint8_t idx = 0;                        // Index for new data pointer
+uint16_t bufStartFrame;                 // Buffer Start Frame
+byte *p;                                // Pointer declaration for the new received data
+byte incomingByte;
+byte incomingBytePrev;
+
+typedef struct{
+   uint16_t start;
+   int16_t  steer;
+   int16_t  speed;
+   uint16_t checksum;
+} SerialCommand;
+SerialCommand Command;
+
+typedef struct{
+   uint16_t start;
+   int16_t  cmd1;
+   int16_t  cmd2;
+   int16_t  speedR_meas;
+   int16_t  speedL_meas;
+   int16_t  batVoltage;
+   int16_t  boardTemp;
+   uint16_t cmdLed;
+   uint16_t checksum;
+} SerialFeedback;
+SerialFeedback Feedback;
+SerialFeedback NewFeedback;
+
 //----- GPS related variables -----//
 bool stopTelemetry;               // Used in gpsTelemetry() functions. Breaks the infinite while loop
 float latitA, lonA;               // Current Latitude/Longitude (point A)
