@@ -1,13 +1,7 @@
 // Initialization of globals and functions
 #include "TinyGPS++.h"
-#include "SoftwareSerial.h"
 #include <Wire.h>
-#include <HMC5883L.h>
 #include <math.h>
-
-// Bluetooth - Note: SoftwareSerial not needed for Arduino Mega 
-// Serial2 port is Bluetooth
-SoftwareSerial HM10(16, 17);        // RX = 16, TX = 17
 
 // Car variables initialized
 #define L_motors_speed 10           // controls the speed of the left motors;
@@ -19,8 +13,7 @@ SoftwareSerial HM10(16, 17);        // RX = 16, TX = 17
 
 // Initializing GPS + Compass objects   // TX: Yellow   RX: Green
 TinyGPSPlus gps;                        // GPS object "gps" that takes in NMEA data
-HMC5883L compass;                       // Compass object "compass"
-                                        // Arduino Mega: SCL digital 21, SDA digital 20
+
 
 //----------------------------- Global Variables -----------------------------//
 //----- GPS related variables -----//
