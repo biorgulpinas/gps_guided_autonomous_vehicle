@@ -6,7 +6,8 @@ void setup() {
   Serial1.begin(9600);                        // Serial1 (piny 19, 18) połączenie z nano (kompas)
   Serial2.begin(9600);                        // Serial2 will print on Bluetooth app terminal
   Serial3.begin(9600);                        // Serial3 (piny 14, 15) połączenie z GPS
-
+  HoverSerial.begin(HOVER_SERIAL_BAUD);
+  
   Serial2.println("Konfiguracja");
 
   // Initializing the interrupt variables
