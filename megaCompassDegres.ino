@@ -1,6 +1,19 @@
-void compassBearingDegrees() {  // The function that updates our current compass bearing
+void compassBearingDegrees() {  // Odczytuje z portu szeregowego kierunek odczytany z magnetometru
+                                // i przekształca je w zmienną float
 
+ String inputFloat = "";
+
+  while (Serial2.available() == 0) {} // Serial monitor will not do anything until input is entered
+  inputFloat = Serial2.readString();
+  float inputCoordinate = inputFloat.toFloat(); // WARNING: THIS IS NOT SUPER ACCURATE AT 6TH DECIMAL PLACE
+                                                // MEANING THAT OUR COORDINATE WILL BE OFF BY 1 FT
+  return inputCoordinate;                       // What the function returns. Set the function to a variable
+                                                // to save the coordinates that you want
+}
  headingDegrees;
+ 
+ Serial2.print("Current Compass Degrees = ");
+ Serial2.println(headingDegrees);
 
 }
 
