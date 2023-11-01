@@ -3,9 +3,9 @@
 void setup() {
   // Initializing the ports needed for all modules
   Serial.begin(9600);                         // Serial0 and Serial3 must have same baud
-  HM10.begin(9600);                           // set HM10 serial at 9600 baud rate. Bluetooth is on Serial2 Mega pins 16 and 17
+  Serial1.begin(9600);                        // Serial1 (piny 19, 18) połączenie z nano (kompas)
   Serial2.begin(9600);                        // Serial2 will print on Bluetooth app terminal
-  Serial3.begin(9600);                        // Use Serial3 for the Mega connections (pin 18, 19)
+  Serial3.begin(9600);                        // Serial3 (piny 14, 15) połączenie z GPS
 
   Serial2.println("Konfiguracja");
 
@@ -58,22 +58,7 @@ void setup() {
   pinMode(R2, OUTPUT);  // Arduino signal output from the right engine rotation direction control
 
   // Compass Setup
-  while (!compass.begin()) {         // Check if compass is being detected
-    Serial2.println("Nie można znaleźć prawidłowego czujnika HMC5883L!");
-    delay(500);                      // Print this every 0.5 seconds while in the loop
-  }
-  compass.setRange(HMC5883L_RANGE_1_3GA);           // Set compass measurement range
-  compass.setMeasurementMode(HMC5883L_CONTINOUS);   // Set compass measurement mode
-  compass.setDataRate(HMC5883L_DATARATE_30HZ);      // Set compass data rate // default 30 Hz
-  compass.setSamples(HMC5883L_SAMPLES_8);           // Set compass # of samples averaged // default 8
-
-  // Compass Offset IS IMPORTANT. RUN CALIBRATION TESTS FIRST IF YOU'RE RUNNING IN A NEW ENVIRONMENT
-  /*
-    Using HMC5883L_calibration.ino from the Arduino-HMC5883L-master library, do an offset calibration test
-    Offset in VEC Building:   (100, 250)
-    Offset at home:           (88, 2), (-80, 50)
-  */
-  compass.setOffset(25, -175);                      // The default offset found. This works on most environments
+ 
 
   // GPS Coordinates Setup
   /*
@@ -97,7 +82,7 @@ void setup() {
   
   inputDestination();       // Go to function to input your destination coordinates
   
-  Serial2.println("Konfiguracja ukończona. Start za 10 sekund");
-  delay(10000);             // 10 seconds - To give us time to prepare the car
+  Serial2.println("Konfiguracja ukończona. Start za 5 sekund");
+  delay(5000);             // 10 seconds - To give us time to prepare the car
 
 }
