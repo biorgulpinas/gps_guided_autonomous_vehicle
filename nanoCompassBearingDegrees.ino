@@ -1,6 +1,7 @@
 #include <QMC5883LCompass.h>
 
 
+
 //#### ustawienia QMC5883L ####
 //
 #define MODE 0x01    //0x00 - uśpienie, 0x01 - ciągły pomiar
@@ -10,20 +11,39 @@
 //#############################
 
 
+
 // ####### Wygładzanie ########
 //
 //*****************************
 // Wykorzystuje funkcję średniej kroczącej do przechowywania (n) odczytów czujników 
 //  i zwracania średnią dla każdej osi.
 //*****************************
+//
 #define STEPS 10        //1 - 10 int, Liczba kroków, według których należy wygładzić wyniki.
 #define ADVANCED true   //bool, True usunie wartości maksymalne i minimalne z każdego kroku
 //#############################
+
+
 
 // ######## Opuznienie ########
 //
 #define DELAY 500   //Opuznienie w ms należy ustawić zależnie od poziomu wygładzania i próbkowania
 //#############################
+
+
+
+//######## Deklinacja #########
+//
+//*****************************
+// O ile jest przesunięta północ magnetyczna względem geograficznej
+// Odolanów  +5° 54"
+//*****************************
+//
+#define DECLI_D       // stopnie
+#define DECLI_M       // minuty
+//#############################
+
+
 
 //######## Kalibracja #########
 //
@@ -36,9 +56,15 @@
 #define Z_SCALE 0
 //#############################
 
+
 //
 QMC5883LCompass compass;
-//*****************************
+//
+
+//#############################
+
+
+
 
 //########## SETUP ############
 void setup(){
@@ -80,18 +106,36 @@ void setup(){
     
   }
 }
+//#############################
 
+
+//############# LOOP ##########
 void loop() {
 
-  int x, y;
   float heading = 0;
   float headinfDegrees = 0;
 
   compass.read();
   heading = atan2f(compass.getX(), compass.getY());
+  /*
+    You can find declination on: http://magnetic-declination.com/
+    (+) Positive or (-) for negative
+      For Bytom / Poland declination angle is 4'26E (positive); + 4 = deg, 26 = min
+      Formula: (deg + (min / 60.0)) / (180 / M_PI);
+      For Los Angeles / USA declination angle is + 11 = deg, 38 = min
+  */
+  float declinationAngle = (5.0 + (54.0 / 60.0)) / (180 / PI);
+  heading += declinationAngle;
+
+  if (heading < 0) { // Correct for heading < 0 deg and heading > 360 deg
+    heading += 2 * PI;
+  }
+  if (heading > 2 * PI) {
+    heading -= 2 * PI;
+  }
 
   // headingDegrees is now a global so you can use it to compare to gpsAngleDegrees
-  headingDegrees = heading * 180 / M_PI; // Convert to degrees
+  headingDegrees = heading * 180 / PI; // Convert to degrees
 
   Serial.println(headingDegrees);
  
