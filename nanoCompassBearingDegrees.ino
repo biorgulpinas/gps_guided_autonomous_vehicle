@@ -124,18 +124,18 @@ void loop() {
       Formula: (deg + (min / 60.0)) / (180 / M_PI);
       For Los Angeles / USA declination angle is + 11 = deg, 38 = min
   */
-  float declinationAngle = (5.0 + (54.0 / 60.0)) / (180 / PI);
+  float declinationAngle = (5.0 + (54.0 / 60.0)) / (180 / M_PI);
   heading += declinationAngle;
 
   if (heading < 0) { // Correct for heading < 0 deg and heading > 360 deg
-    heading += 2 * PI;
+    heading += 2 * M_PI;
   }
-  if (heading > 2 * PI) {
-    heading -= 2 * PI;
+  if (heading > 2 * M_PI) {
+    heading -= 2 * M_PI;
   }
 
   // headingDegrees is now a global so you can use it to compare to gpsAngleDegrees
-  headingDegrees = heading * 180 / PI; // Convert to degrees
+  headingDegrees = heading * 180 / M_PI; // Convert to degrees
 
   Serial.println(headingDegrees);
  
