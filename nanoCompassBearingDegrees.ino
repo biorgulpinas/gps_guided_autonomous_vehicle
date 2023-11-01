@@ -13,12 +13,13 @@
 #define ADVANCED true   //bool, True usunie wartości maksymalne i minimalne z każdego kroku
 
 // Kalibracja
-#define X_MIN 0
-#define X_MAX 0
-#define Y_MIN 0
-#define Y_MAX 0
-#define Z_MIN 0
-#define Z_MAX 0
+#define CALIBRATE true   //Kalibracja włączona
+#define X_OFFSET 0
+#define X_SCALE 0
+#define Y_OFFSET 0
+#define Y_SCALE 0
+#define Z_OFFSET 0
+#define Z_SCALE 0
 
 
 QMC5883LCompass compass;
@@ -28,30 +29,31 @@ void setup(){
   
   compass.init();
 
-  if (CALIBRATING){
+  if (CALIBRATE){
     Serial.println("Kalibracja rospocznie się za 5s...");
     delay(5000);
     Serial.println("Kalibracja! Poruszaj czujnikiem...");
     compass.calibrate();
     Serial.println("Zrobione. Skopiuj wyniki kalibracji");
     Serial.println();
-    Serial.print("compass.setCalibrationOffsets(");
+    Serial.print("OFSET");
     Serial.print(compass.getCalibrationOffset(0));
     Serial.print(", ");
     Serial.print(compass.getCalibrationOffset(1));
     Serial.print(", ");
     Serial.print(compass.getCalibrationOffset(2));
-    Serial.println(");
-    Serial.print("compass.setCalibrationScales(");
+    Serial.println();
+    Serial.print("SKALA");
     Serial.print(compass.getCalibrationScale(0));
     Serial.print(", ");
     Serial.print(compass.getCalibrationScale(1));
     Serial.print(", ");
     Serial.print(compass.getCalibrationScale(2));
-    Serial.println(");");
+    Serial.println();
   }
   else{
-    compass.setCalibration(X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX); 
+    compass.setCalibrationOffsets(X_OFFSET, Y_OFFSET, Z_OFFSET);
+    compass.setCalibrationScales(X_SCALE, Y_SCALE, Z_SCALE);
     compass.setMode(MODE, ODR, RNG, OSR);
     compass.setSmoothing(STEPS, ADVANCED);
   }
@@ -59,13 +61,11 @@ void setup(){
 
 void loop() {
 
-	int x, y;
+  int x, y;
 
   compass.read();
   
-	x = compass.getX();
-	y = compass.getY();
-
+  float heading = atan2f(compass.getX(), compass.getY());
 
 
 
@@ -73,7 +73,7 @@ void loop() {
 void compassBearingDegrees() {  // The function that updates our current compass bearing
 
   Vector norm = compass.readNormalize();
-  float heading = atan2f(norm.YAxis, norm.XAxis); // Calculate heading // atan2
+   // Calculate heading // atan2
   /*
     You can find declination on: http://magnetic-declination.com/
     (+) Positive or (-) for negative
