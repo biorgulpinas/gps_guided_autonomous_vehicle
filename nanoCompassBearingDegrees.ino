@@ -1,4 +1,5 @@
 #include <QMC5883LCompass.h>
+#include <math.h>
 
 
 
