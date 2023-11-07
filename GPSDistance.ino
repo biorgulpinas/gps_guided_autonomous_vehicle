@@ -1,11 +1,19 @@
+//####funkcja konwertuje stopnie na radiany#####
+float ConvertToRadians(float degree)
+{
+    return (degree * (PI_M / 180));
+}
+
+
+//######### Odległość ###########
 float GPSDistance (float lat1, float long1, float lat2, float long2) { // The function that does the actual GPS distance calculation
                                                                         // using updated GPS coordinates and destination coordinates
-  float delta = radians(long1 - long2);                                 
+  float delta = ConvertToRadians(long1 - long2);                                 
   float sdlong = sin(delta);
   float cdlong = cos(delta);
 
-  lat1 = radians(lat1);
-  lat2 = radians(lat2);
+  lat1 = ConvertToRadians(lat1);
+  lat2 = ConvertToRadians(lat2);
 
   float slat1 = sin(lat1);
   float clat1 = cos(lat1);
