@@ -10,7 +10,7 @@ void GPSBearingAngle(float lat1, float long1, float lat2, float long2) {        
 
   gpsAngleDegrees = 360.00 - gpsAngleDegrees;
 
-  Serial2.print("NEW Angle in degrees to point B = ");
-  Serial2.println(gpsAngleDegrees);
+  Serial.print("NEW Angle in degrees to point B = ");
+  Serial.println(gpsAngleDegrees);
 
 }
